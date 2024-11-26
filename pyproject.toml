@@ -1,0 +1,13 @@
+[project]
+name = "bwi-hackathon"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "crewai>=0.80.0",
+    "fastapi>=0.115.5",
+    "ibm-watsonx-ai>=1.1.24",
+    "onnxruntime>=1.20.1",
+    "pypdf2>=3.0.1",
+]
