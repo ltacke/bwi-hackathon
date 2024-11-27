@@ -55,6 +55,36 @@ def store_data(table, data):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
 
+def store_data_id(table, id, data):
+    try:
+        # Connect to the Postgres database
+        conn = get_connection()
+
+        # Create a cursor object using the connection
+        cur = conn.cursor()
+
+        # Define the SQL query to insert the data into the table
+        query = sql.SQL("INSERT INTO {} ({}) VALUES ({}) WHERE id={}").format(
+            sql.Identifier(table),
+            sql.SQL(", ").join(map(sql.Identifier, data.keys())),
+            sql.SQL(", ").join(sql.Literal(value) for value in data.values()),
+            id
+        )
+
+        # Execute the query
+        cur.execute(query)
+
+        # Commit the changes to the database
+        conn.commit()
+
+        # Close the cursor and connection
+        cur.close()
+        conn.close()
+
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+
 def create_table(table_name, columns):
     try:
         # Connect to the Postgres database
@@ -143,7 +173,7 @@ def create_tables():
         'job_json json'
     ]
     
-    delete_table('jobs')
+    #delete_table('jobs')
     create_table('jobs', job_table)
 
 

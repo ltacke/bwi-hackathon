@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 
 from crewai import Crew, LLM
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
+from db.db_tasks import store_job
 from watsonx.watson_ai_client import WatsonXClient
 
 from crew.tasks.job_tasks import JobTasks
@@ -60,7 +61,9 @@ def run(
     )
 
     result = job_crew.kickoff()
-
-    store_job(job_id, url)
+    try:
+        store_job(job_id, url)
+    except:
+        print("Could not store Job in DB!")
 
     return result

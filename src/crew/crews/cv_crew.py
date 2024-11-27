@@ -11,10 +11,13 @@ from crew.agents.cv_agents import CvAgents
 
 
 load_dotenv(override=True)
+FOLDER = "output"
+
 
 
 def run(
     cv,
+    job_id
 ):
     tasks = CvTasks()
     agents = CvAgents()
@@ -40,9 +43,14 @@ def run(
         params=parameters,
     )
 
-    with open("output/test-description.json", "r") as f:
-        job_description = json.load(f)
-        print(job_description)
+    for f in os.listdir(FOLDER):
+        if f.startswith(f"{job_id}-description"):
+            job_description = json.load(open(FOLDER + '/' + f))
+            print(job_description)
+    
+    # with open(f"output/{job_id}-description.json", "r") as f:
+    #     job_description = json.load(f)
+    #     print(job_description)
 
     skills_agent = agents.skills_agent(llm)
     experience_agent = agents.experience_agent(llm)
