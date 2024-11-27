@@ -26,9 +26,4 @@ def run_cv_crew(cv: UploadFile):
     result = ""
     for pages in reader.pages:
         result += pages.extract_text()
-    return result
-
-
-
-if __name__ == "__main__":
-    uvicorn.run("src.main:app", host="localhost", port=8000, reload=True)
+    return cv_crew.run(result)
