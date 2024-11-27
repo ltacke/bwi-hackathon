@@ -32,17 +32,26 @@ class CvAgents:
             goal="Identify gaps in the resume based on the extracted skills and experiences",
             backstory="You are a Gap Identifier Agent. You are an expert in identifying gaps in resumes.",
             verbose=True,
-            max_iter=3,
+            max_iter=2,
         )
 
     def question_agent(self, llm):
         return Agent(
             llm=llm,
             role="Personalized Question Agent",
-            goal="""Formulate a collection of questions based on the job description, the identified gaps and the extracted skills and experience. Identify the five most relevant questions your questions into a JSON file and stick to the given key values. Make sure to use .json as file extension.
-            The JSON File has to look like this: {"questions": ["", "", "", "", ""]}""",
-            tools=[FileWriterTool()],
+            goal="""Formulate a collection of questions based on the job description, the identified gaps and the extracted skills and experience. Identify the five most relevant questions.""",
             backstory="You are a Personalized Question Agent. You are an expert in formulating personalized questions based on the job description, the identified gaps, and the extracted skills and experiences.",
+            verbose=True,
+            max_iter=2,
+        )
+
+    def json_saver_agent(self, llm):
+        return Agent(
+            llm=llm,
+            role="JSON Saver Agent",
+            goal="Save the extracted informations into a JSON file called personal-questions.json.",
+            backstory="You are a JSON Saver Agent. You are an expert in saving informations into a JSON file.",
+            tools=[FileWriterTool()],
             verbose=True,
             max_iter=3,
         )
