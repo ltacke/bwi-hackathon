@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File
 from PyPDF2 import PdfReader
+import uvicorn
 
 from model import job_cew
 
@@ -26,3 +27,8 @@ def run_cv_crew(cv: UploadFile):
     for pages in reader.pages:
         result += pages.extract_text()
     return result
+
+
+
+if __name__ == "__main__":
+    uvicorn.run("src.main:app", host="localhost", port=8000, reload=True)

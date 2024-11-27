@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 from crewai import Crew, LLM
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
-from src.watsonx.watson_ai_client import WatsonXClient
+from watsonx.watson_ai_client import WatsonXClient
 
 from crew.tasks.eval_tasks import EvalTasks
 from crew.agents.eval_agents import EvalAgents

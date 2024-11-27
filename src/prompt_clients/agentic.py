@@ -1,12 +1,12 @@
 from typing import List, Generator
 
-from src.prompt_clients.models import (
+from prompt_clients.models import (
     PromptClient,
     ChatArtifact,
     LlmModelId,
     PromptResponse,
 )
-from src.prompt_clients.prompt_templates.agentic import (
+from prompt_clients.prompt_templates.agentic import (
     Agentic as AgenticTemplate,
 )
 

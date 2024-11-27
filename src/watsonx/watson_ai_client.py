@@ -7,8 +7,8 @@ from typing import Optional, List, Generator
 
 import requests
 
-from src.prompt_clients.models import PromptClient, PromptResponse
-from src.watsonx.models import (
+from prompt_clients.models import PromptClient, PromptResponse
+from watsonx.models import (
     WatsonXClientError,
     TooManyRequestsException,
     BadGatewayException,

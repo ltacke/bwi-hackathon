@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 from crewai import Crew, LLM
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
-from src.watsonx.watson_ai_client import WatsonXClient
+from watsonx.watson_ai_client import WatsonXClient
 
 from crew.tasks.job_tasks import JobTasks
 from crew.agents.job_agents import JobAgents
@@ -30,7 +30,7 @@ def run(
         GenParams.TOP_P: 0,
         GenParams.RANDOM_SEED: 42,
         GenParams.REPETITION_PENALTY: 1.05,
-        GenParams.MAX_NEW_TOKENS: 600,
+        GenParams.MAX_NEW_TOKENS: 1000,
     }
 
     llm = LLM(
@@ -57,5 +57,7 @@ def run(
     )
 
     result = job_crew.kickoff()
+
+    store_job(job_id, url)
 
     return result

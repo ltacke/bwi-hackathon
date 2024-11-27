@@ -1,8 +1,8 @@
 from typing import List
 
-from src.prompt_clients.models import LlmModelId, ChatArtifact
-from src.prompt_clients.prompt_templates.llama3.base import LlamaBase
-from src.prompt_clients.prompt_templates.mistral.base import MistralBase
+from prompt_clients.models import LlmModelId, ChatArtifact
+from prompt_clients.prompt_templates.llama3.base import LlamaBase
+from prompt_clients.prompt_templates.mistral.base import MistralBase
 
 
 class PromptFactory:
