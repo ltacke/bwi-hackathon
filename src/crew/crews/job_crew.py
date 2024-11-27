@@ -9,6 +9,8 @@ from watsonx.watson_ai_client import WatsonXClient
 from crew.tasks.job_tasks import JobTasks
 from crew.agents.job_agents import JobAgents
 
+from db.db_tasks import store_job
+
 
 load_dotenv(override=True)
 
@@ -46,8 +48,8 @@ def run(
     json_agent = agents.json_saver_agent(llm)
 
     scraping_task = tasks.scrape_site(sraping_agent, url)
-    question_task = tasks.question_task(question_agent, job_id)
-    extraction_task = tasks.extraction_task(extraction_agent, job_id)
+    question_task = tasks.question_task(question_agent)
+    extraction_task = tasks.extraction_task(extraction_agent)
     json_task = tasks.json_saver_task(json_agent)
 
     question_task.context = [scraping_task]
