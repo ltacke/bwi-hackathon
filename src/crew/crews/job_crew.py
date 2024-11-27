@@ -62,7 +62,7 @@ def run(
 
     result = job_crew.kickoff()
     try:
-        store_job(job_id, url)
+        store_job(job_id, url, result)
     except:
         print("Could not store Job in DB!")
 

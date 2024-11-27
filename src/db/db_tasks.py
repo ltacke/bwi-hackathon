@@ -10,7 +10,9 @@ FOLDER = ('output')
 TABLE_JOBS = "jobs"
 TABLE_APPLICANTS = "applicants"
 
-def store_job(id: str, url: str):
+def store_job(id: str, url: str, job_json):
+
+    print(job_json.keys())
     # load output
     file = id + '-description.json'
     try:
