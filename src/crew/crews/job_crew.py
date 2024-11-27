@@ -42,17 +42,20 @@ def run(
     sraping_agent = agents.scraping_agent(llm)
     question_agent = agents.question_agent(llm)
     extraction_agent = agents.extraction_agent(llm)
+    json_agent = agents.json_saver_agent(llm)
 
     scraping_task = tasks.scrape_site(sraping_agent, url)
     question_task = tasks.question_task(question_agent, job_id)
     extraction_task = tasks.extraction_task(extraction_agent, job_id)
+    json_task = tasks.json_saver_task(json_agent)
 
     question_task.context = [scraping_task]
-    extraction_task.context = [scraping_task, question_task]
+    extraction_task.context = [scraping_task]
+    json_task.context = [question_task, extraction_task]
 
     job_crew = Crew(
-        agents=[sraping_agent, question_agent, extraction_agent],
-        tasks=[scraping_task, question_task, extraction_task],
+        agents=[sraping_agent, extraction_agent, question_agent, json_agent],
+        tasks=[scraping_task, extraction_task, question_task, json_task],
         verbose=True,
     )
 

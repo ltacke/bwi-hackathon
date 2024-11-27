@@ -25,4 +25,4 @@ def run_cv_crew(cv: UploadFile):
     result = ""
     for pages in reader.pages:
         result += pages.extract_text()
-    return result
+    return cv_crew.run(result)
