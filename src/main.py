@@ -1,8 +1,9 @@
+import json
 from fastapi import FastAPI, UploadFile, File
 from PyPDF2 import PdfReader
 import uvicorn
 
-from db.db_tasks import store_application
+from db.db_tasks import store_application, store_job
 import uvicorn
 
 from model import job, eval
@@ -19,7 +20,12 @@ def read_root():
 
 @app.post("/job_crew")
 def run_job_crew(body: job):
-    return job_crew.run(body.website_url, body.job_id)
+
+    result = job_crew.run(body.website_url, body.job_id)
+    
+    store_job(body.job_id, body.website_url, json.loads(result.raw))
+   
+    return result
 
 
 @app.post("/cv_crew")
@@ -28,6 +34,8 @@ def run_cv_crew(cv: UploadFile, job_id: str):
     result = ""
     for pages in reader.pages:
         result += pages.extract_text()
+
+    
 
     result = cv_crew.run(result, job_id)
 

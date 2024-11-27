@@ -84,6 +84,34 @@ def store_data_id(table, id, data):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
 
+def delete_row_id(table, id):
+    try:
+        # Connect to the Postgres database
+        conn = get_connection()
+
+        # Create a cursor object using the connection
+        cur = conn.cursor()
+
+        # Define the SQL query to insert the data into the table
+        query = sql.SQL("DELETE FROM {} WHERE id = {}").format(
+            sql.Identifier(table),
+            sql.Literal(id)
+        )
+
+        # Execute the query
+        cur.execute(query)
+
+        # Commit the changes to the database
+        conn.commit()
+
+        # Close the cursor and connection
+        cur.close()
+        conn.close()
+
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+
 
 def create_table(table_name, columns):
     try:
@@ -153,7 +181,9 @@ def create_tables():
         'start_time_u_q2 TIMESTAMP',
         'end_time_u_q2 TIMESTAMP',
         'start_time_u_q3 TIMESTAMP',
-        'end_time_u_q3 TIMESTAMP',]
+        'end_time_u_q3 TIMESTAMP',
+        'created timestamp default current_timestamp'
+        ]
     #delete_table('applicants')
     create_table('applicants', applicant_table)
 
@@ -170,7 +200,8 @@ def create_tables():
         'responsibilities text',
         'others text',
         'questions text',
-        'job_json json'
+        'job_json json',
+        'created timestamp default current_timestamp'
     ]
     
     #delete_table('jobs')
