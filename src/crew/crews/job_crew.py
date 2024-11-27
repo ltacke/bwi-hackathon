@@ -8,6 +8,8 @@ from watsonx.watson_ai_client import WatsonXClient
 from crew.tasks.job_tasks import JobTasks
 from crew.agents.job_agents import JobAgents
 
+from db.db_tasks import store_job
+
 
 load_dotenv(override=True)
 
