@@ -1,5 +1,5 @@
 import json
-from fastapi import FastAPI, UploadFile, BackgroundTasks
+from fastapi import FastAPI, UploadFile, BackgroundTasks, Form
 from PyPDF2 import PdfReader
 
 from db.db_tasks import retrieve_answer, retrieve_question, set_answer_timestamp, set_question_timestamp, store_analysis, store_answer, store_application, store_job
@@ -25,16 +25,23 @@ def run_job_crew(body: job):
 
 
 @app.post("/cv_crew")
-def run_cv_crew(cv: UploadFile, job_id: str, user_id: str):
+def run_cv_crew(
+    cv: UploadFile, 
+    name: str = Form(),
+    email: str = Form(),
+    phone: str = Form(),
+    birthdate: str = Form(),
+    job_id: str= Form()
+    ):
     reader = PdfReader(cv.file)
     result = ""
     for pages in reader.pages:
         result += pages.extract_text()
-    
+
     result = cv_crew.run(result, job_id)
 
-    store_application(cv, job_id, json.loads(result.raw), user_id)
-    
+    store_application(name, email, phone, birthdate, job_id, json.loads(result.raw))
+
     return result
 
 
