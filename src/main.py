@@ -1,7 +1,6 @@
 import json
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile
 from PyPDF2 import PdfReader
-import uvicorn
 
 from db.db_tasks import store_application, store_job
 from model import job, eval
@@ -43,7 +42,3 @@ def run_cv_crew(cv: UploadFile, job_id: str):
 @app.post("/eval_crew")
 def run_eval_crew(body: eval):
     return eval_crew.run(body.question, body.answer)
-
-
-if __name__ == "__main__":
-    uvicorn.run("src.main:app", host="localhost", port=8000, reload=True)
