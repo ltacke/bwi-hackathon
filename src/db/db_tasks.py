@@ -84,8 +84,13 @@ def retrieve_applicants(include_job_titles:bool ):
     for r in rows:
         if include_job_titles:
             flag = r[flag_id_pos]
-            
-            result.append(r[id_pos] + " (" +  job_titles[r[job_id_pos]] + ")")
+            flag_symbol = '?'
+            if flag:
+                if flag == "true":
+                    flag_symbol = 'T'
+                else:
+                    flag_symbol = 'F'
+            result.append(r[id_pos] + " (" +  job_titles[r[job_id_pos]] + ") " + flag_symbol)
         else:
             result.append(r[id_pos])
     return result
