@@ -81,6 +81,20 @@ def get_analysis(user_id: str, n: int):
     return analysis
 
 
+@app.get("/get_all_analyses")
+def get_analysis(user_id: str):
+    # get question
+    analyses = {}
+    for n in range(1, 6):
+        question = retrieve_question(user_id, n)
+        answer = retrieve_answer(user_id, n)
+        analysis = retrieve_analysis(user_id, n)
+        analysis['question'] = question
+        analysis['answer'] = answer
+        analyses[n] = analysis
+    return analyses
+
+
 def analyze_background(user_id, n):
     q = retrieve_question(user_id, n)
     a = retrieve_answer(user_id, n)

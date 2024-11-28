@@ -1,0 +1,204 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "FastAPI", "version": "0.1.0" },
+  "servers": [
+    {
+      "url": "https://backend-v2.1osun1mqw42u.eu-gb.codeengine.appdomain.cloud/"
+    }
+  ],
+  "paths": {    
+    "/": {
+      "get": {
+        "summary": "Read Root",
+        "operationId": "read_root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/job_crew": {
+      "post": {
+        "summary": "Run Job Crew",
+        "operationId": "run_job_crew_job_crew_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/job" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/cv_crew": {
+      "post": {
+        "summary": "Run Cv Crew",
+        "operationId": "run_cv_crew_cv_crew_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_run_cv_crew_cv_crew_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/eval_crew": {
+      "post": {
+        "summary": "Run Eval Crew",
+        "operationId": "run_eval_crew_eval_crew_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/eval" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/get_question": {
+      "get": {
+        "summary": "Get Question",
+        "operationId": "get_question_get_question_get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          },
+          {
+            "name": "n",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "title": "N" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/save_answer": {
+      "post": {
+        "summary": "Save Answer",
+        "operationId": "save_answer_save_answer_post",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": { "title": "User Id" }
+          },
+          {
+            "name": "n",
+            "in": "query",
+            "required": true,
+            "schema": { "title": "N" }
+          },
+          {
+            "name": "answer",
+            "in": "query",
+            "required": true,
+            "schema": { "title": "Answer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/get_analysis": {
+      "get": {
+        "summary": "Get Analysis",
+        "operationId": "get_analysis_get_analysis_get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          },
+          {
+            "name": "n",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "title": "N" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_run_cv_crew_cv_crew_post": {
+        "properties": {
+          "cv": { "type": "string", "format": "binary", "title": "Cv" },
+          "name": { "type": "string", "title": "Name" },
+          "email": { "type": "string", "title": "Email" },
+          "phone": { "type": "string", "title": "Phone" },
+          "birthdate": { "type": "string", "title": "Birthdate" },
+          "job_id": { "type": "string", "title": "Job Id" }
+        },
+        "type": "object",
+        "required": ["cv", "name", "email", "phone", "birthdate", "job_id"],
+        "title": "Body_run_cv_crew_cv_crew_post"
+      },
+      "eval": {
+        "properties": {
+          "question": { "type": "string", "title": "Question" },
+          "answer": { "type": "string", "title": "Answer" }
+        },
+        "type": "object",
+        "required": ["question", "answer"],
+        "title": "eval"
+      },
+      "job": {
+        "properties": {
+          "website_url": { "type": "string", "title": "Website Url" },
+          "job_id": { "type": "string", "title": "Job Id" }
+        },
+        "type": "object",
+        "required": ["website_url", "job_id"],
+        "title": "job"
+      }
+    }
+  }
+}
