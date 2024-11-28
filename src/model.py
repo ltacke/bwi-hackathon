@@ -12,3 +12,8 @@ class cvrequest(BaseModel):
 class eval(BaseModel):
     question: str
     answer: str
+
+class save_answer_body(BaseModel):
+    user_id: str
+    n: int
+    answer: str

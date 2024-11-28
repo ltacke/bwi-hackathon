@@ -45,7 +45,6 @@ def store_application(name, email, phone, birthdate, job_id, result):
     job_uuid = get_job_uuid(job_id)
     job_questions = get_job_questions(job_id)
     data = {
-        'id': user_id,
         'job_id': job_uuid,
         'name': name,
         'email': email,
