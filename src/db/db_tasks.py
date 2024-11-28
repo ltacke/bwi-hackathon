@@ -78,6 +78,11 @@ def retrieve_answer(user_id, n):
     question = row[get_field_position(f'a{n}', columns)]
     return question.replace("\"", "")
 
+def retrieve_analysis(user_id, n):
+    row, columns = get_row_query(TABLE_APPLICANTS, "id", user_id)
+    analysis = row[get_field_position(f'analysis{n}', columns)]
+    return analysis
+
 
 
     
