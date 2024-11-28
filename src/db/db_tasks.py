@@ -1,4 +1,6 @@
+from datetime import datetime
 import json
+from math import floor
 
 from fastapi import UploadFile
 
@@ -172,12 +174,27 @@ def retrieve_analyses(user_id):
         answer = row[get_field_position(c, columns)]
         c = f"analysis{i}"
         analysis = row[get_field_position(c, columns)]
+        
+        c = f"start_time_q{i}"
+        start_time = row[get_field_position(c, columns)]
+        c = f"end_time_q{i}"
+        end_time = row[get_field_position(c, columns)]
+
+        
 
         if not analysis:
             analysis = {}
         analysis['question'] = question
         if answer:
             analysis['answer'] = answer
+            
+        if end_time:
+            diff_seconds = (end_time-start_time).total_seconds()
+            diff_minutes = floor(diff_seconds / 60)
+            rest_seconds = diff_seconds % 60
+            analysis['duration'] = f"{diff_minutes}min {rest_seconds:.3g}s"
+            nr_words = question.count(' ') + 1
+            analysis['wpm'] = nr_words/diff_seconds * 60
         analyses[i] = analysis
     return analyses
         
