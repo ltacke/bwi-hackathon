@@ -1,8 +1,9 @@
+from datetime import datetime
 import json
 
 from fastapi import UploadFile
 
-from db.db_connection import get_row_query, retrieve_data, store_data
+from db.db_connection import get_row_query, store_data, store_timestamp_id, update_data_id
 
 TABLE_JOBS = "jobs"
 TABLE_APPLICANTS = "applicants"
@@ -62,6 +63,35 @@ def store_application(cv: UploadFile, job_id: str, result):
         }
     
     store_data(TABLE_APPLICANTS, data)
+
+
+def retrieve_question(user_id, n):
+    row, columns = get_row_query(TABLE_APPLICANTS, "id", user_id)
+    question = row[get_field_position(f'q{n}', columns)]
+    return question.replace("\"", "")
+
+def retrieve_answer(user_id, n):
+    row, columns = get_row_query(TABLE_APPLICANTS, "id", user_id)
+    question = row[get_field_position(f'a{n}', columns)]
+    return question.replace("\"", "")
+
+
+
+    
+def set_question_timestamp(user_id, n):
+    store_timestamp_id(TABLE_APPLICANTS, user_id, f"start_time_q{n}")
+
+def store_answer(user_id, n, answer):
+
+    update_data_id(TABLE_APPLICANTS, user_id, f"a{n}", answer)
+
+def store_analysis(user_id, n, analysis):
+    
+    update_data_id(TABLE_APPLICANTS, user_id, f"analysis{n}", json.dumps(analysis).replace('\'', '\'\''))
+
+
+def set_answer_timestamp(user_id, n):
+    store_timestamp_id(TABLE_APPLICANTS, user_id, f"end_time_q{n}")
 
 def get_field_position(field, columns):
     for i in range(len(columns)):

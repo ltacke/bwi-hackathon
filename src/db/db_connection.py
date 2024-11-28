@@ -1,4 +1,5 @@
 
+from datetime import datetime
 import os
 from dotenv import load_dotenv
 import psycopg2
@@ -55,7 +56,7 @@ def store_data(table, data):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
 
-def store_data_id(table, id, data):
+def store_timestamp_id(table, id, column):
     try:
         # Connect to the Postgres database
         conn = get_connection()
@@ -64,13 +65,40 @@ def store_data_id(table, id, data):
         cur = conn.cursor()
 
         # Define the SQL query to insert the data into the table
-        query = sql.SQL("INSERT INTO {} ({}) VALUES ({}) WHERE id={}").format(
-            sql.Identifier(table),
-            sql.SQL(", ").join(map(sql.Identifier, data.keys())),
-            sql.SQL(", ").join(sql.Literal(value) for value in data.values()),
-            id
+        query = "UPDATE {} set {} = '{}' WHERE id = '{}';".format(
+            table,
+            column,
+            str(datetime.now()),
+            id,
         )
 
+        # Execute the query
+        cur.execute(query)
+
+        # Commit the changes to the database
+        conn.commit()
+
+        # Close the cursor and connection
+        cur.close()
+        conn.close()
+
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+
+def update_data_id(table, id, column, value):
+    try:
+        # Connect to the Postgres database
+        conn = get_connection()
+
+        # Create a cursor object using the connection
+        cur = conn.cursor()
+
+        # Define the SQL query to insert the data into the table
+        query = "UPDATE {} set {} = '{}' WHERE id='{}'".format(
+            table, column, value, id)
+            
+        print(query)
         # Execute the query
         cur.execute(query)
 
@@ -129,7 +157,7 @@ def get_row_query(table, column, value):
         cur.execute(query)
         
         column_names = [desc[0] for desc in cur.description]
-        print("Column names:", column_names)
+        #print("Column names:", column_names)
 
         row = cur.fetchone()
         cur.close()
@@ -152,7 +180,7 @@ def create_table(table_name, columns):
         # Define the SQL query to create the table
         query = sql.SQL(f"CREATE TABLE IF NOT EXISTS {table_name} ({', '.join(columns)})")
 
-        print(query)
+        #print(query)
 
         # Execute the query
         cur.execute(query)
@@ -202,6 +230,7 @@ def create_tables():
         'phone VARCHAR (30)',
         'email VARCHAR(250)',
         'birthdate VARCHAR(30)',
+        'address TEXT',
         'flag TEXT',
         'skills TEXT',
         'education TEXT',
@@ -227,7 +256,12 @@ def create_tables():
         'start_time_q4 TIMESTAMP',
         'end_time_q4 TIMESTAMP',
         'start_time_q5 TIMESTAMP',
-        'end_time_u_q5 TIMESTAMP',
+        'end_time_q5 TIMESTAMP',
+        'analysis1 json',
+        'analysis2 json',
+        'analysis3 json',
+        'analysis4 json',
+        'analysis5 json',
         'pdf BYTEA',
         'json json',
         'created timestamp default current_timestamp'
