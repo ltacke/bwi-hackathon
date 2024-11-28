@@ -76,7 +76,16 @@ def get_applicants_by_job_id(job_id: str):
     for r in rows:
         result.append(r[field_pos])
     return result
-    
+
+def get_all_applicants(job_id: str):
+    job_id = get_job_uuid(job_id)
+    rows, columns = get_all_rows_query(TABLE_APPLICANTS, "job_id", job_id)
+    print(rows)
+    field_pos = get_field_position('id', columns)
+    result = []
+    for r in rows:
+        result.append(r[field_pos])
+    return result
 
 def retrieve_question(user_id, n):
     row, columns = get_row_query(TABLE_APPLICANTS, "id", user_id)
@@ -94,6 +103,27 @@ def retrieve_analysis(user_id, n):
     return analysis
 
 
+def retrieve_analyses(user_id):    
+    row, columns = get_row_query(TABLE_APPLICANTS, "id", user_id)
+    analyses = {}
+    for i in range(1,6):
+        c = f"q{i}"
+        question = row[get_field_position(c, columns)]
+        c = f"a{i}"
+        answer = row[get_field_position(c, columns)]
+        c = f"analysis{i}"
+        analysis = row[get_field_position(c, columns)]
+
+        if not analysis:
+            analysis = {}
+        analysis['question'] = question
+        if answer:
+            analysis['answer'] = answer
+        analyses[i] = analysis
+    return analyses
+        
+    
+        
 
     
 def set_question_timestamp(user_id, n):

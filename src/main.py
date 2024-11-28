@@ -2,7 +2,7 @@ import json
 from fastapi import FastAPI, UploadFile, BackgroundTasks, Form
 from PyPDF2 import PdfReader
 
-from db.db_tasks import get_applicants_by_job_id, retrieve_analysis, retrieve_answer, retrieve_question, set_answer_timestamp, set_question_timestamp, store_analysis, store_answer, store_application, store_job
+from db.db_tasks import get_applicants_by_job_id, retrieve_analyses, retrieve_analysis, retrieve_answer, retrieve_question, set_answer_timestamp, set_question_timestamp, store_analysis, store_answer, store_application, store_job
 from model import job, eval, save_answer_body
 
 from crew.crews import job_crew, cv_crew, eval_crew
@@ -83,15 +83,7 @@ def get_analysis(user_id: str, n: int):
 @app.get("/get_all_analyses")
 def get_analysis(user_id: str):
     # get question
-    analyses = {}
-    for n in range(1, 6):
-        question = retrieve_question(user_id, n)
-        answer = retrieve_answer(user_id, n)
-        analysis = retrieve_analysis(user_id, n)
-        if analysis:
-            analysis['question'] = question
-            analysis['answer'] = answer
-            analyses[n] = analysis
+    analyses = retrieve_analyses(user_id)
     return analyses
 
 
