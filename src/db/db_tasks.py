@@ -42,12 +42,15 @@ def get_job_questions(job_id):
     row, columns  = get_row_query(TABLE_JOBS, "title", job_id)
     return row[get_field_position('questions', columns)].split('\n')
 
-def store_application(cv: UploadFile, job_id: str, result):
+def store_application(name, email, phone, birthdate, job_id, result):
     job_uuid = get_job_uuid(job_id)
     job_questions = get_job_questions(job_id)
     data = {
         'job_id': job_uuid,
-        #'pdf': cv.file,
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'birthdate': birthdate,
         'q1': job_questions[0],
         'q2': job_questions[1],
         'q3': job_questions[2],
