@@ -2,7 +2,7 @@ import json
 
 from fastapi import UploadFile
 
-from db.db_connection import get_row_query, store_data, store_timestamp_id, update_data_id
+from db.db_connection import get_all_rows_query, get_row_query, store_data, store_timestamp_id, update_data_id
 
 TABLE_JOBS = "jobs"
 TABLE_APPLICANTS = "applicants"
@@ -67,6 +67,17 @@ def store_application(name, email, phone, birthdate, job_id, result):
     store_data(TABLE_APPLICANTS, data)
 
 
+def get_applicants_by_job_id(job_id: str):
+    job_id = get_job_uuid(job_id)
+    rows, columns = get_all_rows_query(TABLE_APPLICANTS, "job_id", job_id)
+    print(rows)
+    field_pos = get_field_position('id', columns)
+    result = []
+    for r in rows:
+        result.append(r[field_pos])
+    return result
+    
+
 def retrieve_question(user_id, n):
     row, columns = get_row_query(TABLE_APPLICANTS, "id", user_id)
     question = row[get_field_position(f'q{n}', columns)]
@@ -74,8 +85,8 @@ def retrieve_question(user_id, n):
 
 def retrieve_answer(user_id, n):
     row, columns = get_row_query(TABLE_APPLICANTS, "id", user_id)
-    question = row[get_field_position(f'a{n}', columns)]
-    return question.replace("\"", "")
+    answer = row[get_field_position(f'a{n}', columns)]
+    return answer
 
 def retrieve_analysis(user_id, n):
     row, columns = get_row_query(TABLE_APPLICANTS, "id", user_id)

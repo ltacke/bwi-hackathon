@@ -169,6 +169,34 @@ def get_row_query(table, column, value):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
 
+def get_all_rows_query(table, column, value):
+    try:
+        # Connect to the Postgres database
+        conn = get_connection()
+
+        # Create a cursor object using the connection
+        cur = conn.cursor()
+        
+        # Define the SQL query to insert the data into the table
+        query = sql.SQL("SELECT * FROM {} WHERE {} = {}").format(
+            sql.Identifier(table),
+            sql.Identifier(column),
+            sql.Literal(value)
+        )
+
+        cur.execute(query)
+        
+        column_names = [desc[0] for desc in cur.description]
+        #print("Column names:", column_names)
+
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+        return rows, column_names
+
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+
 
 
 def create_table(table_name, columns):
