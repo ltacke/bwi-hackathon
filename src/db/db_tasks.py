@@ -1,4 +1,3 @@
-from datetime import datetime
 import json
 
 from fastapi import UploadFile
@@ -26,7 +25,7 @@ def store_job(id: str, url: str, job_description):
         "missing_requirements": "\n".join(job_description["missing_requirements"])
     }
     
-    store_data(TABLE_JOBS, data)
+    return store_data(TABLE_JOBS, data)
 
 def get_job_description(job_id: str):
     row, columns  = get_row_query(TABLE_JOBS, "title", job_id)
@@ -42,10 +41,11 @@ def get_job_questions(job_id):
     row, columns  = get_row_query(TABLE_JOBS, "title", job_id)
     return row[get_field_position('questions', columns)].split('\n')
 
-def store_application(cv: UploadFile, job_id: str, result):
+def store_application(cv: UploadFile, job_id: str, result, user_id: str):
     job_uuid = get_job_uuid(job_id)
     job_questions = get_job_questions(job_id)
     data = {
+        'id': user_id,
         'job_id': job_uuid,
         #'pdf': cv.file,
         'q1': job_questions[0],

@@ -49,9 +49,11 @@ def store_data(table, data):
         # Commit the changes to the database
         conn.commit()
 
+        row_id = cur.fetchone()[0]
         # Close the cursor and connection
         cur.close()
         conn.close()
+        return row_id
 
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
@@ -297,11 +299,7 @@ if __name__ == "__main__":
     
     create_tables()
     
-
-    data = {'description': 'test'}
-    print("storing data")
     table_name="applicants"
-    store_data(table_name, data)
 
     data_table = retrieve_data(table_name)
 

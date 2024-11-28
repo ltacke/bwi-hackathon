@@ -20,22 +20,21 @@ def run_job_crew(body: job):
     result = job_crew.run(body.website_url, body.job_id)
 
     store_job(body.job_id, body.website_url, json.loads(result.raw))
-
+   
     return result
 
 
 @app.post("/cv_crew")
-def run_cv_crew(cv: UploadFile, job_id: str):
+def run_cv_crew(cv: UploadFile, job_id: str, user_id: str):
     reader = PdfReader(cv.file)
     result = ""
     for pages in reader.pages:
         result += pages.extract_text()
     
-
     result = cv_crew.run(result, job_id)
 
-    store_application(cv, job_id, json.loads(result.raw))
-
+    store_application(cv, job_id, json.loads(result.raw), user_id)
+    
     return result
 
 
