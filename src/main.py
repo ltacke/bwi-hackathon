@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import FastAPI, UploadFile, BackgroundTasks, Form
 from PyPDF2 import PdfReader
 
-from db.db_tasks import get_applicants_by_job_id, retrieve_analyses, retrieve_analysis, retrieve_answer, retrieve_applicants, retrieve_question, set_answer_timestamp, set_question_timestamp, store_analysis, store_answer, store_application, store_job
+from db.db_tasks import get_applicants_by_job_id, retrieve_analyses, retrieve_analysis, retrieve_answer, retrieve_applicants, retrieve_applicants_for_manager, retrieve_question, set_answer_timestamp, set_question_timestamp, store_analysis, store_answer, store_application, store_job
 from model import job, eval, save_answer_body
 
 from crew.crews import job_crew, cv_crew, eval_crew
@@ -96,6 +96,10 @@ def get_applicants_for_job(job_id: str):
 def get_applicants(include_job_title:bool):
    return retrieve_applicants(include_job_title)
 
+
+@app.get("/get_applicants_for_manager")
+def get_applicants_for_manager():
+   return retrieve_applicants_for_manager()
 
 def analyze_background(user_id, n):
     q = retrieve_question(user_id, n)

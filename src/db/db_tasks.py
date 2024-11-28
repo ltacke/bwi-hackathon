@@ -75,18 +75,51 @@ def retrieve_applicants(include_job_titles:bool ):
     for j in j_rows:
         job_titles[j[j_id_pos]] = j[j_title_pos]
     
-    rows, columns = get_all_rows(TABLE_APPLICANTS, ['id', 'job_id'])
+    rows, columns = get_all_rows(TABLE_APPLICANTS, ['id', 'job_id', 'flag'])
     #print(rows)
     id_pos = get_field_position('id', columns)
     job_id_pos = get_field_position('job_id', columns)
+    flag_id_pos = get_field_position('flag' ,columns)
     result = []
     for r in rows:
         if include_job_titles:
+            flag = r[flag_id_pos]
+            
             result.append(r[id_pos] + " (" +  job_titles[r[job_id_pos]] + ")")
         else:
             result.append(r[id_pos])
     return result
+
+def retrieve_applicants_for_manager():
+    j_rows, columns = get_all_rows(TABLE_JOBS, ['id', 'title'])
     
+    j_id_pos = get_field_position('id', columns)
+    j_title_pos = get_field_position('title', columns)
+    job_titles = {}
+    for j in j_rows:
+        job_titles[j[j_id_pos]] = j[j_title_pos]
+    
+    rows, columns = get_all_rows(TABLE_APPLICANTS, ['id', 'job_id', 'name', 'email', 'birthdate', 'flag'])
+    #print(rows)
+    id_pos = get_field_position('id', columns)
+    job_id_pos = get_field_position('job_id', columns)
+    name_pos = get_field_position( 'name', columns)
+    email_pos = get_field_position( 'email', columns)
+    birthdate_pos = get_field_position( 'birthdate', columns)
+    flag_pos = get_field_position( 'flag', columns)
+    applicants = []
+    for r in rows:
+        a = {
+            'id': r[id_pos],
+            'name': r[name_pos],
+            'email': r[email_pos],
+            'birthdate': r[birthdate_pos],
+            'flag': r[flag_pos],
+            'job': job_titles[r[job_id_pos]]
+            }
+        
+        applicants.append(a)
+    return applicants
 
 def get_applicants_by_job_id(job_id: str):
     job_id = get_job_uuid(job_id)

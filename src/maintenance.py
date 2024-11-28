@@ -5,6 +5,12 @@ from main import analyze_background
 
 if __name__ == "__main__":
 
+    delete_row_id("jobs", "fd6db6cf-9dff-4fe0-931f-f52978afa4b4")
+    applicants= [
+  "9b3b9fe7-7f02-4824-8cf2-96259774f0f6",
+  "f0e19ec3-b60d-4793-b33d-349682f671d6"]
+    # for a in applicants:
+    #     delete_row_id('applicants', a)
 
     #delete_table("jobs")
     #delete_table('applicants')
@@ -35,7 +41,7 @@ if __name__ == "__main__":
     #delete_row_id('jobs', 'a2382693-77a1-4c9a-89ae-9e49ccf58af1')
     
     data_table = retrieve_data(table_name)
-    print(data_table[['id', 'title', 'created']])
+    print(data_table[[ 'title', 'created']])
 
 
     # job = get_job_description('Cloud-Engineer-57661')
