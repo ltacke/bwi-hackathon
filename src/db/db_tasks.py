@@ -2,7 +2,7 @@ import json
 
 from fastapi import UploadFile
 
-from db.db_connection import get_all_rows_query, get_row_query, store_data, store_timestamp_id, update_data_id
+from db.db_connection import get_all_rows, get_all_rows_query, get_row_query, store_data, store_timestamp_id, update_data_id
 
 TABLE_JOBS = "jobs"
 TABLE_APPLICANTS = "applicants"
@@ -65,12 +65,33 @@ def store_application(name, email, phone, birthdate, job_id, result):
         }
     
     store_data(TABLE_APPLICANTS, data)
-
+    
+def retrieve_applicants(include_job_titles:bool ):
+    j_rows, columns = get_all_rows(TABLE_JOBS, ['id', 'title'])
+    
+    j_id_pos = get_field_position('id', columns)
+    j_title_pos = get_field_position('title', columns)
+    job_titles = {}
+    for j in j_rows:
+        job_titles[j[j_id_pos]] = j[j_title_pos]
+    
+    rows, columns = get_all_rows(TABLE_APPLICANTS, ['id', 'job_id'])
+    #print(rows)
+    id_pos = get_field_position('id', columns)
+    job_id_pos = get_field_position('job_id', columns)
+    result = []
+    for r in rows:
+        if include_job_titles:
+            result.append(r[id_pos] + " (" +  job_titles[r[job_id_pos]] + ")")
+        else:
+            result.append(r[id_pos])
+    return result
+    
 
 def get_applicants_by_job_id(job_id: str):
     job_id = get_job_uuid(job_id)
     rows, columns = get_all_rows_query(TABLE_APPLICANTS, "job_id", job_id)
-    print(rows)
+    #print(rows)
     field_pos = get_field_position('id', columns)
     result = []
     for r in rows:
