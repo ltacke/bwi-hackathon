@@ -3,7 +3,7 @@ from fastapi import FastAPI, UploadFile, BackgroundTasks, Form
 from PyPDF2 import PdfReader
 
 from db.db_tasks import retrieve_analysis, retrieve_answer, retrieve_question, set_answer_timestamp, set_question_timestamp, store_analysis, store_answer, store_application, store_job
-from model import job, eval
+from model import job, eval, save_answer_body
 
 from crew.crews import job_crew, cv_crew, eval_crew
 
@@ -64,11 +64,10 @@ def get_question(user_id: str, n: int):
 
 
 @app.post("/save_answer")
-def save_answer(user_id, n, answer, background_tasks: BackgroundTasks):
-
-    store_answer(user_id, n, answer)
-    set_answer_timestamp(user_id, n)
-    background_tasks.add_task(analyze_background, user_id, n)
+def save_answer(body: save_answer_body, background_tasks: BackgroundTasks):
+    store_answer(body.user_id, body.n, body.answer)
+    set_answer_timestamp(body.user_id, body.n)
+    background_tasks.add_task(analyze_background, body.user_id, body.n)
 
 @app.get("/get_analysis")
 def get_analysis(user_id: str, n: int):
