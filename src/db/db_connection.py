@@ -111,6 +111,34 @@ def delete_row_id(table, id):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
 
+def get_row_query(table, column, value):
+    try:
+        # Connect to the Postgres database
+        conn = get_connection()
+
+        # Create a cursor object using the connection
+        cur = conn.cursor()
+        
+        # Define the SQL query to insert the data into the table
+        query = sql.SQL("SELECT * FROM {} WHERE {} = {}").format(
+            sql.Identifier(table),
+            sql.Identifier(column),
+            sql.Literal(value)
+        )
+
+        cur.execute(query)
+        
+        column_names = [desc[0] for desc in cur.description]
+        print("Column names:", column_names)
+
+        row = cur.fetchone()
+        cur.close()
+        conn.close()
+        return row, column_names
+
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+
 
 
 def create_table(table_name, columns):
@@ -201,6 +229,7 @@ def create_tables():
         'others text',
         'questions text',
         'job_json json',
+        'missing_requirements text',
         'created timestamp default current_timestamp'
     ]
     

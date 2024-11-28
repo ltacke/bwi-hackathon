@@ -33,6 +33,15 @@ class JobAgents:
             max_iter=3,
         )
 
+    def gap_agent(self, llm):
+        return Agent(
+            llm=llm,
+            role="Expert Gap Identification Agent",
+            goal="""Extract missing requirements that are usually relevant for the job not mentioned in the given job description. Consider: Job Role, Job Level, Pre Requirements (Education, Experience), Hard Skills, Soft Skills and Responsibilities. Identify the most significant gaps.""",
+            backstory="You are a expert for jobs that can identify missing requirements in a job posting.",
+            max_iter=3,
+        )
+
     def json_saver_agent(self, llm):
         return Agent(
             llm=llm,

@@ -49,7 +49,7 @@ class CvAgents:
         return Agent(
             llm=llm,
             role="JSON Saver Agent",
-            goal="Save the extracted informations into a JSON file called personal-questions.json.",
+            goal="Save the extracted informations into a JSON file called application.json.",
             backstory="You are a JSON Saver Agent. You are an expert in saving informations into a JSON file.",
             tools=[FileWriterTool()],
             verbose=True,

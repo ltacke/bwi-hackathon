@@ -39,7 +39,7 @@ def run_cv_crew(cv: UploadFile, job_id: str):
 
     result = cv_crew.run(result, job_id)
 
-    store_application(cv, job_id, result)
+    #store_application(cv, job_id, json.loads(result['raw']))
 
     return result
 

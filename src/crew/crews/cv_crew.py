@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 from crewai import Crew, LLM
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
+from db.db_tasks import get_job_description
 from watsonx.watson_ai_client import WatsonXClient
 
 from crew.tasks.cv_tasks import CvTasks
@@ -43,14 +44,7 @@ def run(
         params=parameters,
     )
 
-    for f in os.listdir(FOLDER):
-        if f.startswith(f"{job_id}-description"):
-            job_description = json.load(open(FOLDER + '/' + f))
-            print(job_description)
-    
-    # with open(f"output/{job_id}-description.json", "r") as f:
-    #     job_description = json.load(f)
-    #     print(job_description)
+    job_description = get_job_description(job_id)
 
     skills_agent = agents.skills_agent(llm)
     experience_agent = agents.experience_agent(llm)
@@ -66,7 +60,7 @@ def run(
 
     gap_task.context = [experience_task, skills_task]
     question_task.context = [experience_task, skills_task, gap_task]
-    json_saver_task.context = [question_task]
+    json_saver_task.context = [question_task, experience_task, skills_task, gap_task]
 
     crew = Crew(
         agents=[

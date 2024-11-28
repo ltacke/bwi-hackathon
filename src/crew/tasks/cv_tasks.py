@@ -44,6 +44,10 @@ class CvTasks:
             expected_output="""A well structured JSON file with the extracted informations. Make sure to use .json as file extension when saving the file.
             The JSON has to look like this:
             {   
+                "skills": ["", ""],
+                "education": ["", ""],
+                "experience": ["", ""],
+                "gaps": ["", ""],
                 "questions": ["", "", "", "", ""] 
             }
             """,

@@ -16,6 +16,13 @@ class JobTasks:
             agent=agent,
             async_execution=True,
         )
+    def gap_task(self, agent):
+        return Task(
+            description="""Verify the requirements in the job description. Which possible other requirements are missing for the job role? Consider: Job Role, Job Level, Pre Requirements (Education, Experience), Hard Skills, Soft Skills and Responsibilities""",
+            expected_output="""A list of five missing requirements from the job description.""",
+            agent=agent,
+            async_execution=False,
+        )
 
     def question_task(self, agent):
         return Task(
@@ -40,7 +47,8 @@ class JobTasks:
                 "soft_skills": ["", ""], 
                 "responsibilities": ["", "",], 
                 "others": ["", ""], 
-                "questions": ["", "", "", "", ""]
+                "questions": ["", "", "", "", ""],
+                "missing_requirements": ["", "", "", "", ""]
             }""",
             agent=agent,
         )
