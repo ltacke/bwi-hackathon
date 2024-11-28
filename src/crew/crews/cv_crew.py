@@ -1,11 +1,7 @@
-import os
-import json
 from dotenv import load_dotenv
-
-from crewai import Crew, LLM
-from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
+from crewai import Crew
 from db.db_tasks import get_job_description
-from watsonx.watson_ai_client import WatsonXClient
+from watsonx.llm import standard_llm
 
 from crew.tasks.cv_tasks import CvTasks
 from crew.agents.cv_agents import CvAgents
@@ -14,8 +10,6 @@ from crew.agents.cv_agents import CvAgents
 load_dotenv(override=True)
 FOLDER = "output"
 
-
-
 def run(
     cv,
     job_id
@@ -23,26 +17,7 @@ def run(
     tasks = CvTasks()
     agents = CvAgents()
 
-    API_KEY = os.environ["WAI_API_KEY"]
-    URL = os.environ["WAI_URL"]
-    PROJECT_ID = os.environ["WAI_PROJECT_ID"]
-    os.environ["WX_URL"] = URL
-    os.environ["WX_TOKEN"] = WatsonXClient.get_access_token(API_KEY)
-
-    parameters = {
-        GenParams.TOP_K: 1,
-        GenParams.TOP_P: 0,
-        GenParams.RANDOM_SEED: 42,
-        GenParams.REPETITION_PENALTY: 1.05,
-        GenParams.MAX_NEW_TOKENS: 600,
-    }
-
-    llm = LLM(
-        model="watsonx/meta-llama/llama-3-70b-instruct",
-        base_url=URL,
-        project_id=PROJECT_ID,
-        params=parameters,
-    )
+    llm = standard_llm()
 
     job_description = get_job_description(job_id)
 

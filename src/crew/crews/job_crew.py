@@ -1,9 +1,7 @@
-import os
 from dotenv import load_dotenv
 
-from crewai import Crew, LLM
-from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
-from watsonx.watson_ai_client import WatsonXClient
+from crewai import Crew
+from watsonx.llm import standard_llm
 
 from crew.tasks.job_tasks import JobTasks
 from crew.agents.job_agents import JobAgents
@@ -20,26 +18,8 @@ def run(
     tasks = JobTasks()
     agents = JobAgents()
 
-    API_KEY = os.environ["WAI_API_KEY"]
-    URL = os.environ["WAI_URL"]
-    PROJECT_ID = os.environ["WAI_PROJECT_ID"]
-    os.environ["WX_URL"] = URL
-    os.environ["WX_TOKEN"] = WatsonXClient.get_access_token(API_KEY)
+    llm = standard_llm()
 
-    parameters = {
-        GenParams.TOP_K: 1,
-        GenParams.TOP_P: 0,
-        GenParams.RANDOM_SEED: 42,
-        GenParams.REPETITION_PENALTY: 1.05,
-        GenParams.MAX_NEW_TOKENS: 1500,
-    }
-
-    llm = LLM(
-        model="watsonx/meta-llama/llama-3-70b-instruct",
-        base_url=URL,
-        project_id=PROJECT_ID,
-        params=parameters,
-    )
     sraping_agent = agents.scraping_agent(llm)
     question_agent = agents.question_agent(llm)
     extraction_agent = agents.extraction_agent(llm)
