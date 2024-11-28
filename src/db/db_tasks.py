@@ -197,6 +197,10 @@ def store_analysis(user_id, n, analysis):
     update_data_id(TABLE_APPLICANTS, user_id, f"analysis{n}", json.dumps(analysis).replace('\'', '\'\''))
 
 
+def store_flag(user_id, flag):
+
+    update_data_id(TABLE_APPLICANTS, user_id, "flag",flag)
+
 def set_answer_timestamp(user_id, n):
     store_timestamp_id(TABLE_APPLICANTS, user_id, f"end_time_q{n}")
 
