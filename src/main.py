@@ -34,12 +34,11 @@ def run_cv_crew(cv: UploadFile, job_id: str):
     result = ""
     for pages in reader.pages:
         result += pages.extract_text()
-
     
 
     result = cv_crew.run(result, job_id)
 
-    #store_application(cv, job_id, json.loads(result['raw']))
+    store_application(cv, job_id, json.loads(result.raw))
 
     return result
 

@@ -196,23 +196,42 @@ def retrieve_data(table_name):
 def create_tables():
 
     applicant_table  = [
-        'id uuid PRIMARY KEY DEFAULT gen_random_uuid()', 
-        'description TEXT', 
+        'id uuid PRIMARY KEY DEFAULT gen_random_uuid()',
+        'job_id uuid',
+        'name VARCHAR (80)',
+        'phone VARCHAR (30)',
+        'email VARCHAR(250)',
+        'birthdate VARCHAR(30)',
+        'flag TEXT',
+        'skills TEXT',
+        'education TEXT',
+        'experience TEXT',
+        'gaps TEXT',
+        'applicant_questions TEXT',
+        'q1 TEXT',
+        'q2 TEXT',
+        'q3 TEXT',
+        'q4 TEXT',
+        'q5 TEXT',
+        'a1 TEXT',
+        'a2 TEXT',
+        'a3 TEXT',
+        'a4 TEXT',
+        'a5 TEXT',
         'start_time_q1 TIMESTAMP',
         'end_time_q1 TIMESTAMP',
         'start_time_q2 TIMESTAMP',
         'end_time_q2 TIMESTAMP',
         'start_time_q3 TIMESTAMP',
         'end_time_q3 TIMESTAMP',
-        'start_time_u_q1 TIMESTAMP',
-        'end_time_u_q1 TIMESTAMP',
-        'start_time_u_q2 TIMESTAMP',
-        'end_time_u_q2 TIMESTAMP',
-        'start_time_u_q3 TIMESTAMP',
-        'end_time_u_q3 TIMESTAMP',
+        'start_time_q4 TIMESTAMP',
+        'end_time_q4 TIMESTAMP',
+        'start_time_q5 TIMESTAMP',
+        'end_time_u_q5 TIMESTAMP',
+        'pdf BYTEA',
+        'json json',
         'created timestamp default current_timestamp'
         ]
-    #delete_table('applicants')
     create_table('applicants', applicant_table)
 
     job_table = [

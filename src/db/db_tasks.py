@@ -46,13 +46,18 @@ def store_application(cv: UploadFile, job_id: str, result):
     job_questions = get_job_questions(job_id)
     data = {
         'job_id': job_uuid,
-        'cv': cv.file,
+        #'pdf': cv.file,
         'q1': job_questions[0],
         'q2': job_questions[1],
         'q3': job_questions[2],
         'q4': result['questions'][0],
         'q5': result['questions'][1],
-        
+        'skills': result['skills'],
+        'education': result['education'],
+        'experience': result['experience'],
+        'gaps': result['gaps'],
+        'applicant_questions': "\n".join(result['questions']),
+        'json': json.dumps(result)
 
         }
     

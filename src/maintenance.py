@@ -4,16 +4,18 @@ from db.db_tasks import get_job_description
 
 if __name__ == "__main__":
 
-    print(get_job_description("Cloud-Engineer-57661"))
 
     #delete_table("jobs")
+    #delete_table('applicants')
     create_tables()
     
 
-    data = {'description': 'test'}
-    print("storing data")
+    # data = {'description': 'test'}
+    # print("storing data")
+    # 
+    # 
     table_name="applicants"
-    #store_data(table_name, data)
+    # #store_data(table_name, data)
 
     data_table = retrieve_data(table_name)
 
@@ -28,7 +30,7 @@ if __name__ == "__main__":
     print(data_table[['id', 'title', 'created']])
 
 
-    job = get_job_description('Cloud-Engineer-57661')
+    # job = get_job_description('Cloud-Engineer-57661')
 
-    print(job)
+    # print(job)
     
