@@ -67,11 +67,12 @@ def store_timestamp_id(table, id, column):
         cur = conn.cursor()
 
         # Define the SQL query to insert the data into the table
-        query = "UPDATE {} set {} = '{}' WHERE id = '{}';".format(
+        query = "UPDATE {} set {} = '{}' WHERE id = '{}' AND {} name IS NULL;".format(
             table,
             column,
             str(datetime.now()),
             id,
+            column
         )
 
         # Execute the query
