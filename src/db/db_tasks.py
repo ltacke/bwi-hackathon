@@ -199,7 +199,17 @@ def retrieve_analyses(user_id):
     return analyses
         
     
-        
+def get_applicant_description(user_id: str):
+    row, columns  = get_row_query(TABLE_APPLICANTS, "id", user_id)
+    applicant = row[get_field_position('json', columns)]
+    result = {
+        'skills': applicant['skills'],
+        'experience': applicant['experience'],
+        'gaps': applicant['gaps'],
+        'education': applicant['education']
+
+        }
+    return result
 
     
 def set_question_timestamp(user_id, n):
